@@ -8,8 +8,9 @@
 import SwiftUI
 
 struct TermsView: View {
-
+    @Environment(\.dismiss) var dismiss
     @AppStorage("hideTerms") var hideTerms = true
+
     @State var shouldHideTerms = true
 
     var body: some View {
@@ -40,18 +41,27 @@ struct TermsView: View {
                 Text("Switch channels on your Logitech MX 3s mouse.")
                     .font(.subheadline)
 
-                Text(AppInfo.terms())
-                    .padding(.top, 16)
+                ScrollView {
+                    Text(AppInfo.terms())
+                }
+                .padding(.top, 16)
 
-                Spacer()
+                HStack {
+                    Spacer()
+
+                    Button("Continue") { dismiss() }
+                        .buttonStyle(.borderedProminent)
+
+                    Spacer()
+                }
 
                 Text(AppInfo.copyright())
+                    .padding(.top, 16)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding()
         }
         .frame(width: 600, height: 320)
-        .navigationTitle("About \(AppInfo.name())")
         .onDisappear {
             hideTerms = shouldHideTerms
         }

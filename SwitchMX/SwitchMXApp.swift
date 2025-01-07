@@ -9,14 +9,16 @@ import SwiftUI
 
 @main
 struct SwitchMXApp: App {
+    @Environment(\.openWindow) var openWindow
     @AppStorage("hideTerms") var hideTerms = false
 
     var body: some Scene {
-        WindowGroup {
+        Window("About \(AppInfo.name())", id: "about") {
             if !hideTerms {
                 TermsView()
             }
         }
+        .defaultPosition(UnitPoint(x: 0.5, y: 0.4))
         .windowStyle(.hiddenTitleBar)
         .windowResizability(.contentSize)
 
@@ -35,6 +37,7 @@ struct SwitchMXApp: App {
 
             Button("About \(AppInfo.name())...") {
                 hideTerms = false
+                openWindow(id: "about")
             }
 
             Button("Quit") {
