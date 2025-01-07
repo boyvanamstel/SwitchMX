@@ -9,8 +9,18 @@ import SwiftUI
 
 @main
 struct SwitchMXApp: App {
+    @AppStorage("hideTerms") var hideTerms = false
+
     var body: some Scene {
-        MenuBarExtra("SwitchMX", systemImage: "computermouse.fill") {
+        WindowGroup {
+            if !hideTerms {
+                TermsView()
+            }
+        }
+        .windowStyle(.hiddenTitleBar)
+        .windowResizability(.contentSize)
+
+        MenuBarExtra(AppInfo.name(), systemImage: "computermouse.fill") {
             Button("One") {
                 DeviceManager.change(to: .one)
             }.keyboardShortcut("1")
@@ -22,6 +32,10 @@ struct SwitchMXApp: App {
             }.keyboardShortcut("3")
 
             Divider()
+
+            Button("About \(AppInfo.name())...") {
+                hideTerms = false
+            }
 
             Button("Quit") {
                 NSApplication.shared.terminate(nil)
