@@ -1,0 +1,93 @@
+name: main_deploy
+
+permissions:
+  contents: write
+
+on:
+  push:
+    tags: [ v* ]
+
+jobs:
+  main_deploy:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout Xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
+
+      - name: Checkout project
+        uses: actions/checkout@v2
+
+      - name: Find first scheme of default project
+        run: |
+          echo "SCHEME=$(xcodebuild -list -json | jq -r '.project.schemes[0]')" >> "$GITHUB_ENV"
+          
+      - name: Set environment variables from project settings
+        run: |
+          function set-env-from-proj { 
+            echo "$1=$(xcodebuild -scheme "$SCHEME" -showBuildSettings | grep " $1 " | sed "s/[ ]*$1 = //")" >> "$GITHUB_ENV"
+          }
+          set-env-from-proj FULL_PRODUCT_NAME
+          set-env-from-proj INSTALL_PATH
+          set-env-from-proj PRODUCT_BUNDLE_IDENTIFIER
+          set-env-from-proj PRODUCT_MODULE_NAME
+          set-env-from-proj PRODUCT_NAME
+          set-env-from-proj PROJECT_NAME
+
+      - name: Import signing certificate into keychain
+        run: |
+          KEYCHAIN_PATH=$RUNNER_TEMP/default.keychain
+          echo "KEYCHAIN_PATH=$KEYCHAIN_PATH" >> "$GITHUB_ENV"
+          security create-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+          security default-keychain -s $KEYCHAIN_PATH
+          security unlock-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+          security import <(echo $BUILD_CERTIFICATE_BASE64 | base64 --decode) \
+                          -f pkcs12 \
+                          -k $KEYCHAIN_PATH \
+                          -P $P12_PASSWORD \
+                          -T /usr/bin/codesign
+          security set-key-partition-list -S apple-tool:,apple: -s -k "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+        env:
+          BUILD_CERTIFICATE_BASE64: ${{ secrets.BUILD_CERTIFICATE_BASE64 }}
+          P12_PASSWORD: ${{ secrets.P12_PASSWORD }}
+
+      - name: Build and archive app
+        shell: bash --noprofile --norc -eo pipefail {0}
+        run: |
+          xcodebuild archive -scheme "$SCHEME" -destination 'generic/platform=macOS' -archivePath "build/$SCHEME.xcarchive" CODE_SIGN_IDENTITY=- | xcpretty
+
+      - name: Export and sign appp
+        shell: bash --noprofile --norc -eo pipefail {0}
+        run: |
+          xcodebuild -exportArchive -archivePath "build/$SCHEME.xcarchive" -exportOptionsPlist "$SCHEME/ExportOptions.plist" -exportPath build/ | xcpretty
+
+      - name: Notarize app
+        uses: lando/notarize-action@v2
+        with:
+          product-path: build/${{ env.FULL_PRODUCT_NAME }}
+          appstore-connect-username: ${{ secrets.NOTARIZE_USERNAME }}
+          appstore-connect-password: ${{ secrets.NOTARIZE_PASSWORD }}
+          appstore-connect-team-id: ${{ secrets.TEAM_ID }}
+
+      - name: Staple app
+        uses: keehun/xcode-staple@v1
+        with:
+          product-path: build/${{ env.FULL_PRODUCT_NAME }}
+
+      - name: Package app
+        run: |
+          ditto -c -k --sequesterRsrc --keepParent "build/$FULL_PRODUCT_NAME" "build/$PRODUCT_MODULE_NAME.zip"
+
+      - name: Release app
+        uses: softprops/action-gh-release@v1
+        with:
+          files: build/${{ env.PRODUCT_MODULE_NAME }}.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Clean up keychain
+        if: ${{ always() }}
+        run: |
+          security delete-keychain $KEYCHAIN_PATH
