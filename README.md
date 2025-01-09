@@ -17,7 +17,7 @@ Get the [latest download](https://github.com/boyvanamstel/SwitchMX/releases/late
 
 ## Setup
 
-SwitchMX needs _Input Monitoring_ to be enabled in Settings &rarr; Privacy & Security &rarr; Input Monitoring to be able to send commands to _Humand Interface Devices_ (HID).
+SwitchMX needs _Input Monitoring_ to be enabled in Settings &rarr; Privacy & Security &rarr; Input Monitoring to be able to send commands to _Human Interface Devices_ (HID).
 
 ![Enable Input Monitoring permission](Resources/InputMonitoring.png)
 
