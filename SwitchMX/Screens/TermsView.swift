@@ -38,7 +38,7 @@ struct TermsView: View {
             VStack(alignment: .leading, spacing: 8) {
                 Text(AppInfo.name())
                     .font(.largeTitle)
-                Text("Switch channels on your Logitech MX 3s mouse.")
+                Text("Switch channels on your Logitech MX Master 3S mouse.")
                     .font(.subheadline)
 
                 ScrollView {
@@ -51,6 +51,7 @@ struct TermsView: View {
 
                     Button("Continue") { dismiss() }
                         .buttonStyle(.borderedProminent)
+                        .keyboardShortcut(.defaultAction)
 
                     Spacer()
                 }

@@ -259,7 +259,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_LSUIElement = YES;
-				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "Needed to update Bluetooth device settings.";
+				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "Required to update Bluetooth device settings.";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © Boy van Amstel. All rights reserved.";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -290,7 +290,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_LSUIElement = YES;
-				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "Needed to update Bluetooth device settings.";
+				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "Required to update Bluetooth device settings.";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © Boy van Amstel. All rights reserved.";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

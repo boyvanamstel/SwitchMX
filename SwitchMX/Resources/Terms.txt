@@ -1,4 +1,4 @@
-This product is provided "as is" without any warranty and support. Use at your own risk. By using this software you accept these terms.
+This software is provided "as is" without any warranty and support. Use at your own risk. By using {{APPNAME}} you accept these terms.
 
 {{APPNAME}} is not associated with Logitech in any way.
 
