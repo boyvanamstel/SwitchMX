@@ -1,7 +1,10 @@
-<div align="center" style="margin-bottom: rem;">
+<div align="center">
 <img src="Resources/AppIcon.png" width="256" height="256">
 <h1>SwitchMX</h1>
 <p><b>Switch channels on your Logitech MX Master 3S mouse.</b></p>
+<br>
+<br>
+<br>
 </div>
 
 SwitchMX allows you to quickly switch to one of the three devices that are connected to your Logitech MX 3S mouse without pressing the physical button.
@@ -23,6 +26,16 @@ _Or_ automatically trigger the shortcut at a certain time or mix it in another w
 ## Support
 
 This software is provided "as is" without warranty and support. Use at your own risk.
+
+## FAQ
+
+### Q: Why can't I see SwitchMX in my menu bar?
+
+A: There's limited space in the menu bar on macOS. If you can't find the icon it's likely hidden. Close another app or find another way to make some room for it.
+
+## Other Apps
+
+Visit [dangr.co](https://dangr.co) for more apps.
 
 ## License
 

@@ -12,7 +12,7 @@ struct ChannelSwitcherIntent: AppIntent {
     @Parameter(title: "Channel")
     var channel: Int?
 
-    static let title: LocalizedStringResource = "Switch Logitech MX 3s Channel"
+    static let title: LocalizedStringResource = "Switch Logitech MX Master 3S Channel"
     static var description = IntentDescription("Changes the Bluetooth device channel to one, two or three.")
 
     func perform() async throws -> some IntentResult {
