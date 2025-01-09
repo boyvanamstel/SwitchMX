@@ -43,7 +43,7 @@ This software is provided "as is" without warranty and support. Use at your own 
 
 A: There's limited space in the menu bar on macOS. If you can't find the icon it's likely hidden. Close another app or find another way to make some room for it.
 
-## Other Apps
+## More Apps
 
 Visit [dangr.co](https://dangr.co) for more apps.
 
