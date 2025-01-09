@@ -84,7 +84,7 @@ jobs:
       - name: Release app
         uses: softprops/action-gh-release@v1
         with:
-          files: build/${{ env.PRODUCT_MODULE_NAME }}-{{ env.MARKETING_VERSION }}.zip
+          files: build/${{ env.PRODUCT_MODULE_NAME }}-${{ env.MARKETING_VERSION }}.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
