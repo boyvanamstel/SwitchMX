@@ -37,11 +37,15 @@ jobs:
           set-env-from-proj PROJECT_NAME
           set-env-from-proj PROJECT_FILE_PATH
 
-      - name: Set versions based on tag and commit count
+      - name: Generate build number
+        uses: onyxmueller/build-tag-number@v1
+        with:
+          token: ${{ secrets.github_token }}
+
+      - name: Set versions based on git info
         run: |
           TAG=${GITHUB_REF#refs/*/}
           VERSION_NUMBER=${TAG:1}
-          BUILD_NUMBER="$(git rev-list HEAD --count)"
           sed -i "" "s/MARKETING_VERSION = .*/MARKETING_VERSION = $VERSION_NUMBER;/g" "$PROJECT_FILE_PATH/project.pbxproj"
           sed -i "" "s/CURRENT_PROJECT_VERSION = .*/CURRENT_PROJECT_VERSION = $BUILD_NUMBER;/g" "$PROJECT_FILE_PATH/project.pbxproj"
           echo "MARKETING_VERSION=$VERSION_NUMBER" >> "$GITHUB_ENV"
