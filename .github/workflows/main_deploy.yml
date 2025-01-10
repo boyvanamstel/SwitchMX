@@ -37,6 +37,12 @@ jobs:
           set-env-from-proj PROJECT_NAME
           set-env-from-proj MARKETING_VERSION
 
+      - name: Check if version matches
+        run: |
+          if [ "${GITHUB_REF#refs/*/}" != "v$MARKETING_VERSION" ]; then
+            exit 1
+          fi
+
       - name: Import signing certificate into keychain
         run: |
           KEYCHAIN_PATH=$RUNNER_TEMP/default.keychain
@@ -59,7 +65,7 @@ jobs:
         run: |
           xcodebuild archive -scheme "$SCHEME" -destination 'generic/platform=macOS' -archivePath "build/$SCHEME.xcarchive" CODE_SIGN_IDENTITY=- | xcpretty
 
-      - name: Export and sign appp
+      - name: Export and sign app
         shell: bash --noprofile --norc -eo pipefail {0}
         run: |
           xcodebuild -exportArchive -archivePath "build/$SCHEME.xcarchive" -exportOptionsPlist "$SCHEME/ExportOptions.plist" -exportPath build/ | xcpretty
