@@ -92,12 +92,12 @@ jobs:
 
       - name: Package app
         run: |
-          ditto -c -k --sequesterRsrc --keepParent "build/$FULL_PRODUCT_NAME" "build/$PRODUCT_MODULE_NAME-$MARKETING_VERSION.zip"
+          ditto -c -k --sequesterRsrc --keepParent "build/$FULL_PRODUCT_NAME" "build/$PRODUCT_MODULE_NAME-v$MARKETING_VERSION.zip"
 
       - name: Release app
         uses: softprops/action-gh-release@v1
         with:
-          files: build/${{ env.PRODUCT_MODULE_NAME }}-${{ env.MARKETING_VERSION }}.zip
+          files: build/${{ env.PRODUCT_MODULE_NAME }}-v${{ env.MARKETING_VERSION }}.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
