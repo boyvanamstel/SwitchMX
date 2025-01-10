@@ -62,7 +62,7 @@ struct TermsView: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding()
         }
-        .frame(width: 600, height: 320)
+        .frame(width: 600, height: 340)
         .onDisappear {
             hideTerms = shouldHideTerms
         }
