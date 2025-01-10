@@ -35,13 +35,16 @@ jobs:
           set-env-from-proj PRODUCT_MODULE_NAME
           set-env-from-proj PRODUCT_NAME
           set-env-from-proj PROJECT_NAME
-          set-env-from-proj MARKETING_VERSION
+          set-env-from-proj PROJECT_FILE_PATH
 
-      - name: Check if version matches
+      - name: Set versions based on tag and commit count
         run: |
-          if [ "${GITHUB_REF#refs/*/}" != "v$MARKETING_VERSION" ]; then
-            exit 1
-          fi
+          TAG=${GITHUB_REF#refs/*/}
+          VERSION_NUMBER=${TAG:1}
+          BUILD_NUMBER="$(git rev-list HEAD --count)"
+          sed -i "" "s/MARKETING_VERSION = .*/MARKETING_VERSION = $VERSION_NUMBER;/g" "$PROJECT_FILE_PATH/project.pbxproj"
+          sed -i "" "s/CURRENT_PROJECT_VERSION = .*/CURRENT_PROJECT_VERSION = $BUILD_NUMBER;/g" "$PROJECT_FILE_PATH/project.pbxproj"
+          echo "MARKETING_VERSION=$VERSION_NUMBER" >> "$GITHUB_ENV"
 
       - name: Import signing certificate into keychain
         run: |
